@@ -22,7 +22,7 @@ function RenderDish({dish}){
     </div>
     );
 }
-function RenderComments({comments, addComment, dishId}) {
+function RenderComments({comments, postComment, dishId}) {
         if (comments != null)
         {
             const commentListItem =comments.map((comment)=>{
@@ -43,7 +43,7 @@ function RenderComments({comments, addComment, dishId}) {
                     <ul className="list-unstyled">
                        {commentListItem}
                     </ul>
-                    <CommentForm dishId={dishId} addComment={addComment} />
+                    <CommentForm dishId={dishId} postComment={postComment} />
                 </div>
             );
 
@@ -88,16 +88,11 @@ function RenderComments({comments, addComment, dishId}) {
                     </div>                
                 </div>
                 <div className="row row-header">
-                    <div className="col-6">
-                        <RenderDish dish={props.dish} />
+                        <RenderDish dish={props.dish} />                        
+                        <RenderComments comments={props.comments}
+                        postComment={props.postComment}
+                        dishId={props.dish.id}/>
                     </div>
-                    <div className="col-6">
-                        <RenderComments comments={props.comments} />
-                        <div>
-                        <Button outline onClick={this.toggleModal}><span className="fa fa-edit fa-lg"></span> Submit Comment </Button>
-                        </div>
-                    </div>
-                </div>
                 </div>
             );
         }
@@ -133,12 +128,13 @@ class CommentForm extends Component {
     hadnleSubmit(values) {
 
         this.toggleModal();
-        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+        this.props.postComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
     render() {
         return(
             <div>
+                <Button outline onClick={this.toggleModal}><span className="fa fa-edit fa-lg"></span> Submit Comment </Button>
                 <Modal isOpen={this.state.isModelOpen} toggle={this.toggleModal}>
                     <ModalHeader toggle={this.toggleModal}>Submit Comment</ModalHeader>
                     <ModalBody>
